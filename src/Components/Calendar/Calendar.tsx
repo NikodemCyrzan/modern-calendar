@@ -33,9 +33,9 @@ const Dropdown = ({
         "Grudzień",
     ];
 
-    date.day = date.day || 1;
-    date.month = date.month || 1;
-    date.year = date.year || 2020;
+    date.day ||= 1;
+    date.month ||= 1;
+    date.year ||= 2020;
 
     let startingDay = new Date(date.year, date.month - 1, 1).getDay(),
         monthLength = new Date(date.year, date.month, 0).getDate();

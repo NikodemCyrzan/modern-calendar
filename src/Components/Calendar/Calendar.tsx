@@ -122,8 +122,6 @@ const Calendar = () => {
             month = formatMonth(date.getMonth() + 1),
             day = formatDay(date.getDate(), year, month);
 
-        console.log(e.target.value, year, month, day);
-
         handleSetDate({
             year,
             month,

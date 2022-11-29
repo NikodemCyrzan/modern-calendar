@@ -5,10 +5,7 @@
 Fully functional modern date input
 
 ## Preview
-https://incandescent-kashata-1d02c8.netlify.app
-
-## Unsplash API documentation
-https://unsplash.com/documentation
+https://tourmaline-treacle-854d88.netlify.app/
 
 ## Technologies
 * React.js

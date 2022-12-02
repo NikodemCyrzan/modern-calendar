@@ -5,11 +5,27 @@ import rightArrowIcon from "./right-arrow.svg";
 
 type DropdownProps = {
     visible: boolean;
+    // dla samego date można stworzyć osobny interface np. w /src/components/Calendar/types.ts
     date: { day: number; month: number; year: number };
     monthBack: () => void;
     monthForward: () => void;
     setDate: (date: { day: number; month: number; year: number }) => void;
 };
+// nie zmieniajace sie zmienne lepiej umieszczac nad komponent badz w osobnym pliku
+const months = [
+    "Styczeń",
+    "Luty",
+    "Marzec",
+    "Kwiecień",
+    "Maj",
+    "Czerwiec",
+    "Lipiec",
+    "Sierpień",
+    "Wrzesień",
+    "Październik",
+    "Listopad",
+    "Grudzień",
+];
 
 const Dropdown = ({
     visible = false,
@@ -18,33 +34,21 @@ const Dropdown = ({
     monthForward,
     setDate,
 }: DropdownProps) => {
-    const months = [
-        "Stryczeń",
-        "Luty",
-        "Marzec",
-        "Kwiecień",
-        "Maj",
-        "Czerwiec",
-        "Lipiec",
-        "Sierpień",
-        "Wrzesień",
-        "Październik",
-        "Listopad",
-        "Grudzień",
-    ];
 
-    date.day ||= 1;
-    date.month ||= 1;
-    date.year ||= 2020;
 
-    let startingDay = new Date(date.year, date.month - 1, 1).getDay(),
-        monthLength = new Date(date.year, date.month, 0).getDate();
+    const { day, month, year } = date || { day: 0, month: 1, year: 2020 }
+
+    // to mozna zamknac w funkcji / dwoch funkcjach 
+    let startingDay = new Date(year, month - 1, 1).getDay(),
+        monthLength = new Date(year, month, 0).getDate();
 
     startingDay = startingDay === 0 ? 7 : startingDay;
 
+    // ta tablice także można umieścić wyzej albo w osobnym pliku + samo header można umieścić jako osobny komponent
     let header = ["Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "Nd"].map((e) => (
         <span key={e}>{e}</span>
     ));
+    // samo Array().fill powinno byc jako osobna zmienna a wywołanie jej można wrzucić do osbnego komponentu
     let days = Array(monthLength + startingDay - 1)
         .fill(0)
         .map((_, i) =>
@@ -54,12 +58,12 @@ const Dropdown = ({
                     onClick={() =>
                         setDate({
                             day: i + 2 - startingDay,
-                            month: date.month,
-                            year: date.year,
+                            month,
+                            year,
                         })
                     }
                     className={
-                        i + 2 - startingDay === date.day ? "focused" : ""
+                        i + 2 - startingDay === day ? "focused" : ""
                     }>
                     {i + 2 - startingDay}
                 </span>
@@ -109,6 +113,7 @@ const Calendar = () => {
         }, 1);
     };
 
+    // te wszystkie funkcje można wrzucić w osobny plik
     const formatYear = (year: number): number =>
         Math.max(Math.min(year, 2030), 2020);
     const formatMonth = (month: number): number =>
@@ -128,7 +133,9 @@ const Calendar = () => {
             day,
         });
     };
+
     const handleMonthBack = () => {
+            // to tez mozna wrzucić w osobna funkcje ktora przyjmuje date i oddaje date
         const month = formatMonth(date.month - 1 <= 0 ? 12 : date.month - 1),
             year = formatYear(date.month - 1 <= 0 ? date.year - 1 : date.year),
             day = formatDay(date.day, year, month);
@@ -139,7 +146,8 @@ const Calendar = () => {
             day,
         });
     };
-    const handleMonthforward = () => {
+    const handleMonthForward = () => {
+        // tu tez mozna w osobna
         const month = formatMonth(date.month + 1 > 12 ? 1 : date.month + 1),
             year = formatYear(date.month + 1 > 12 ? date.year + 1 : date.year),
             day = formatDay(date.day, year, month);
@@ -184,7 +192,7 @@ const Calendar = () => {
                             visible={isDropdownVisible}
                             date={date}
                             monthBack={handleMonthBack}
-                            monthForward={handleMonthforward}
+                            monthForward={handleMonthForward}
                             setDate={handleSetDate}
                         />
                     </div>
